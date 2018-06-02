@@ -1,6 +1,8 @@
 EXEC = avm
 
-SRC_FILES = main.cpp
+SRC_FILES = main.cpp \
+			Lexer.cpp \
+			avmException.cpp
 
 SRC = $(addprefix src/, $(SRC_FILES))
 
@@ -27,5 +29,8 @@ fclean: clean
 	@rm -rf $(EXEC)
 
 re: fclean all
+
+r:
+	./$(EXEC)
 
 .phony: all clean fclean re
