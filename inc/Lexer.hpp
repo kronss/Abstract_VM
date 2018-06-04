@@ -27,11 +27,11 @@ class Lexer {
 
 
 		Lexer(const Lexer &rhs);
-		Lexer &operator = (const Lexer &rhs);
-		Lexer();
+		Lexer &operator = (const Lexer &rhs) = delete;
+		Lexer() = delete;
 
-		void readFromStdInput();
-		void readFromFile();
+		void readFromStream(std::istream&  fin);
+		void readFromFile(std::string &fileName);
 
 };
 
