@@ -1,5 +1,7 @@
 #include "Lexer.hpp"
 #include "avmException.hpp"
+#include <fstream>
+
 Lexer::~Lexer() {}
 
 Lexer::Lexer(int argc, std::string fileName)
@@ -23,26 +25,27 @@ try : _argc(argc),
 	std::cout << e.what() << std::endl;
 }
 
-void Lexer::readFromStream(std::istream&  fin)
+void Lexer::readFromStream(std::istream&  in)
 {
+//    int line = 0;
+    (void)in;
 
-    int line = 0;
 
-    while ()
-    {
-        ;
-        line++;
-    }
+//    while (fin.get)
+//    {
+//        ;
+//        line++;
+//    }
 }
 
 void Lexer::readFromFile(std::string &fileName)
 {
-    std::ifstream fs;
-
+    std::ifstream fs(fileName);
 
     if (!fs.is_open()) {
-                    throw AvmException(OPEN_ERROR, "bad file");
-                }
+        throw AvmException(OPEN_ERROR, "bad file");
+    }
+
 
 }
 
@@ -61,13 +64,13 @@ Lexer::Lexer(const Lexer &obj)
   _fileName(obj._fileName)
 {
 }
-
-Lexer & Lexer::operator=(const Lexer &rvl)
-{
-	if (this == &rvl) { return *this; }
-	/*TODO: add some data for copying*/
-	return *this;
-}
+//
+//Lexer & Lexer::operator=(const Lexer &rvl)
+//{
+//	if (this == &rvl) { return *this; }
+//	/*TODO: add some data for copying*/
+//	return *this;
+//}
 
 
 
