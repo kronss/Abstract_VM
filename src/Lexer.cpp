@@ -23,17 +23,16 @@ Lexer::Lexer(int argc, char **argv)
 }
 
 
-void Lexer::readFromStream(std::istream&  in)
+void Lexer::readFromStream(std::istream& in)
 {
-//    int line = 0;
+    int line = 0;
     (void)in;
 
-
-//    while (fin.get)
-//    {
-//        ;
-//        line++;
-//    }
+    while (in.get)
+    {
+        ;
+        line++;
+    }
 }
 
 void Lexer::readFromFile(char *fileName)
