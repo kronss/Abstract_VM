@@ -7,15 +7,18 @@
 
 
 
-int main(const int argc, const char **argv)
+int main(const int argc, char **argv)
 {
 
-		Lexer lexer(argc, argv[argc - 1]);
+    try {
+        Lexer lexer(argc, argv);
 
 
 
 
-
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+    }
 
 
 

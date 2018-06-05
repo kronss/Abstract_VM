@@ -4,9 +4,8 @@
 
 Lexer::~Lexer() {}
 
-Lexer::Lexer(int argc, std::string fileName)
-try : _argc(argc),
-      _fileName(fileName)
+Lexer::Lexer(int argc, char **argv)
+: _argc(argc)
 {
     switch (_argc) {
     case NO_ARGUMENT:
@@ -14,16 +13,15 @@ try : _argc(argc),
         break;
 
     case ONE_ARGUMENT:
-        readFromFile(fileName);
+        readFromFile(argv[1]);
         break;
 
     case MORE_THEN_ONE:
     default:
         throw AvmException(LEXER_ERROR, "invalid numbers of argument");
-	}
-} catch (std::exception &e) {
-	std::cout << e.what() << std::endl;
+    }
 }
+
 
 void Lexer::readFromStream(std::istream&  in)
 {
@@ -38,7 +36,7 @@ void Lexer::readFromStream(std::istream&  in)
 //    }
 }
 
-void Lexer::readFromFile(std::string &fileName)
+void Lexer::readFromFile(char *fileName)
 {
     std::ifstream fs(fileName);
 
@@ -67,9 +65,9 @@ Lexer::Lexer(const Lexer &obj)
 //
 //Lexer & Lexer::operator=(const Lexer &rvl)
 //{
-//	if (this == &rvl) { return *this; }
-//	/*TODO: add some data for copying*/
-//	return *this;
+//    if (this == &rvl) { return *this; }
+//    /*TODO: add some data for copying*/
+//    return *this;
 //}
 
 
@@ -82,5 +80,5 @@ Lexer::Lexer(const Lexer &obj)
 //{
 //
 //
-//	return o;
+//    return o;
 //}

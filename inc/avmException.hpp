@@ -6,11 +6,11 @@
 
 enum Reason
 {
-	LEXER_ERROR,
-	PARSER_ERROR,
-	OPEN_ERROR,
+    LEXER_ERROR,
+    PARSER_ERROR,
+    OPEN_ERROR,
 
-	UNKNOWN_ERROR,
+    UNKNOWN_ERROR,
 };
 
 
