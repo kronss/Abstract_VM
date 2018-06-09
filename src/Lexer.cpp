@@ -1,11 +1,14 @@
 #include "Lexer.hpp"
 #include "avmException.hpp"
+#include <sys/stat.h>
 #include <fstream>
 
 Lexer::~Lexer() {}
 
 Lexer::Lexer(int argc, char **argv)
-: _argc(argc)
+: _argc(argc),
+//  _fileName(NULL),
+  _readFromFile(false)
 {
     switch (_argc) {
     case NO_ARGUMENT:
@@ -16,34 +19,55 @@ Lexer::Lexer(int argc, char **argv)
         readFromFile(argv[1]);
         break;
 
-    case MORE_THEN_ONE:
     default:
         throw AvmException(LEXER_ERROR, "invalid numbers of argument");
     }
 }
 
 
-void Lexer::readFromStream(std::istream& in)
+void Lexer::readFromStream(std::istream& fin)
 {
-    int line = 0;
-    (void)in;
+    int lineNbr = 1;
+    std::string line;
+    bool isErr = false;
 
-    while (in.get)
-    {
-        ;
-        line++;
+    std::cout << fin << std::endl;
+
+    while (std::getline(fin, line)) {
+//        if (line == ";;") break ;
+
+//        validateLineAndPush(line, lineNbr);
+//        checkLine();
+
+        std::cout << lineNbr << " " << line << std::endl;//
+        lineNbr++;
     }
+    if (isErr) {
+        throw AvmException(LEXER_ERROR, "No input provided");
+    }
+
+    if (lineNbr == 1) {
+        throw AvmException(LEXER_ERROR, "parsing terminated");
+    }
+}
+
+static inline int is_regular_file(const char *fileName)
+{
+    struct stat fileStat;
+    stat(fileName, &fileStat);
+    return S_ISREG(fileStat.st_mode);
 }
 
 void Lexer::readFromFile(char *fileName)
 {
-    std::ifstream fs(fileName);
+    std::fstream fs(fileName);
+    _readFromFile = true;
 
-    if (!fs.is_open()) {
-        throw AvmException(OPEN_ERROR, "bad file");
+    if (!is_regular_file(fileName)) {
+        throw AvmException(LEXER_ERROR, "bad file");
     }
 
-
+    readFromStream(fs);
 }
 
 
@@ -58,7 +82,8 @@ void Lexer::readFromFile(char *fileName)
 
 Lexer::Lexer(const Lexer &obj)
 : _argc(obj._argc),
-  _fileName(obj._fileName)
+  _fileName(obj._fileName),
+  _readFromFile(obj._readFromFile)
 {
 }
 //

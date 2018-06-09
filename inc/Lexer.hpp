@@ -9,7 +9,6 @@
 enum {
     NO_ARGUMENT     = 1,
     ONE_ARGUMENT,
-    MORE_THEN_ONE,
 };
 
 
@@ -22,15 +21,16 @@ class Lexer {
         void readTokens(int argv, char **argc);
 
     private:
-        const int _argc;
+        const int   _argc;
         std::string _fileName;
+        bool        _readFromFile;
 
 
         Lexer(const Lexer &rhs);
         Lexer &operator = (const Lexer &rhs) = delete;
         Lexer() = delete;
 
-        void readFromStream(std::istream&  fin);
+        void readFromStream(std::istream& fin);
         void readFromFile(char *fileName);
 
 };

@@ -30,7 +30,11 @@ fclean: clean
 
 re: fclean all
 
-r:
+r: all
 	./$(EXEC)
+
+rf: all
+	./$(EXEC) test/test1
+
 
 .phony: all clean fclean re
