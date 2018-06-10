@@ -10,7 +10,7 @@ OBJ = $(SRC:.cpp=.o)
 
 INC = -I./inc
 
-CC = clang++
+CC = g++
 
 CCFLAGS = -Wall -Wextra -Werror -std=c++11
 

@@ -6,6 +6,9 @@ int main(const int argc, char **argv)
 {
     try {
         Lexer lexer(argc, argv);
+        lexer.read();
+
+        //
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
     } catch (...) {

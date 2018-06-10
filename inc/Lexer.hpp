@@ -18,7 +18,7 @@ class Lexer {
         Lexer(int argc, char **argv);
         ~Lexer();
 
-        void readTokens(int argv, char **argc);
+        void read();
 
     private:
         const int   _argc;
@@ -26,12 +26,14 @@ class Lexer {
         bool        _readFromFile;
 
 
+
+
         Lexer(const Lexer &rhs);
         Lexer &operator = (const Lexer &rhs) = delete;
         Lexer() = delete;
 
         void readFromStream(std::istream& fin);
-        void readFromFile(char *fileName);
+        void readFromFile();
 
 };
 
