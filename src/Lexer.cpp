@@ -8,10 +8,12 @@
 
 
 Lexer::Lexer(int argc, char **argv)
-: _argc(argc)
+: _argc(argc),
 //  _fileName(NULL),
 //  _readFromFile(false)
+  _lexerFailed(false)
 {
+//    _tokens.reserve(100);
     switch (_argc) {
     case NO_ARGUMENT:
         _readFromFile = false;
@@ -48,43 +50,61 @@ void Lexer::read()
 //const std::regex Lexer::m_unaryRegex("\\s*(pop|dump|add|sub|mul|div|mod|square|sqrt|log|log10|abs|print|exit)\\s*(?:;.*)?");
 
 
-
+/*
+ * param[in] fin - file input
+ */
 void Lexer::readFromStream(std::istream& fin)
 {
-    int lineNbr = 1;
+    int lineNbr = 0;
     std::string line;
     bool isErr = false;
 
     std::cout << __func__ << ":" << __LINE__ << std::endl;
-//    std::regex empty_line("^\\s*$");
 
-    std::regex emptyLine("^\\s*$");
+    std::regex emptyLineRegexp("^\\s*$");
+    std::regex operationRegexp("^\\s*(pop|dump|add|sub|mul|div|mod|print|exit)\\s*(?:;.*)?$");
+    std::regex commandAndIntRegexp("^\\s*(push|assert)\\s+(int8|int16|int32)\\(([-]?\\d+)\\)\\s*(?:;.*)?$");
+    std::regex commandAndFloatingRegexp("^\\s*(push|assert)\\s+(float|double)\\(([-]?\\d+\\.\\d+)\\)\\s*(?:;.*)?$");
+    std::regex commentRegexp("^\\s*(?:;.*){1}$");
+    std::smatch lineMatch;
 
-//    std::regex operation("^\\s*(pop|dump|add|sub|mul|div|mod|print|exit)\\s*(?:;.*)?$");
 
-    std::smatch line_match;
-
+    /*
+     * Reading from stream line by line.
+     * Push valid tokens to vector _tTokens.
+     * Throw invalid tokens to _lexerErrors and continue to analyze stream.
+     */
     while (std::getline(fin, line)) {
-
-
-        std::cout << "empty line\n";
-        if (regex_search(line, line_match, emptyLine)) {
-            std::cout << "empty line\n";
-        }
-
-
-
-
-
-
-//        if (line == ";;") break ;
-
-//        validateLineAndPush(line, lineNbr);
-//        checkLine();
-
-        std::cout << lineNbr << " " << line << std::endl;//
         lineNbr++;
+
+        /*
+         * Hack! Diferent logic betwean input data by std::cin and Fstream.
+         * std::cin terminated by ';;'
+         * Fstream terminated by EOF
+         */
+        if (!_readFromFile && line == ";;") { return ; }
+
+        try {
+            if (regex_search(line, lineMatch, emptyLineRegexp) || regex_search(line, lineMatch, commentRegexp)) {
+                /*skip line*/
+                continue ;
+            } else if (regex_search(line, lineMatch, operationRegexp)) {
+                _tokens.push_back({lineMatch[1].str()});
+            } else if (regex_search(line, lineMatch, commandAndIntRegexp) || regex_search(line, lineMatch, commandAndFloatingRegexp)) {
+                _tokens.push_back({lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str()});
+            } else {
+                std::string what("error in line " + std::to_string(lineNbr) + ":" + "\n\t\'" + line + "\'");
+                throw AvmException(LEXER_ERROR, what);
+            }
+        } catch(std::exception &e) {
+            _lexerErrors.push_back(e);
+        }
     }
+
+
+
+
+
 
     if (isErr) {
         throw AvmException(LEXER_ERROR, "No input provided");
@@ -124,7 +144,8 @@ void Lexer::readFromFile()
 Lexer::Lexer(const Lexer &obj)
 : _argc(obj._argc),
   _fileName(obj._fileName),
-  _readFromFile(obj._readFromFile)
+  _readFromFile(obj._readFromFile),
+_lexerFailed(obj._lexerFailed)
 {
 }
 //

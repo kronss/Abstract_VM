@@ -4,6 +4,10 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+
+typedef std::vector<std::vector<std::string>> tTokens;
+typedef std::vector<std::exception> lLexerErrors;
 
 
 enum {
@@ -21,12 +25,12 @@ class Lexer {
         void read();
 
     private:
-        const int   _argc;
-        std::string _fileName;
-        bool        _readFromFile;
-
-
-
+        const int    _argc;
+        std::string  _fileName;
+        bool         _readFromFile;
+        tTokens      _tokens;
+        bool         _lexerFailed;
+        lLexerErrors _lexerErrors;
 
         Lexer(const Lexer &rhs);
         Lexer &operator = (const Lexer &rhs) = delete;

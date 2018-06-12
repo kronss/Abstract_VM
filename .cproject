@@ -99,23 +99,26 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="AVM.cdt.managedbuild.target.gnu.cross.exe.948510161" name="Executable" projectType="cdt.managedbuild.target.gnu.cross.exe"/>
-	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1512449605;cdt.managedbuild.config.gnu.cross.exe.debug.1512449605.;cdt.managedbuild.tool.gnu.cross.c.compiler.720751337;cdt.managedbuild.tool.gnu.c.compiler.input.259665989">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.415304345;cdt.managedbuild.config.gnu.cross.exe.release.415304345.;cdt.managedbuild.tool.gnu.cross.c.compiler.1041238149;cdt.managedbuild.tool.gnu.c.compiler.input.834213889">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.415304345;cdt.managedbuild.config.gnu.cross.exe.release.415304345.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.1815586404;cdt.managedbuild.tool.gnu.cpp.compiler.input.1147925531">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1512449605;cdt.managedbuild.config.gnu.cross.exe.debug.1512449605.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.809696063;cdt.managedbuild.tool.gnu.cpp.compiler.input.1292700536">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
+		<project id="Abstract_VM.git.null.1150916813" name="Abstract_VM.git"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/Abstract_VM"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Abstract_VM"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="0.583312952">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="0.1690656481">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

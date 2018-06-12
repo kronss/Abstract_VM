@@ -10,7 +10,7 @@ OBJ = $(SRC:.cpp=.o)
 
 INC = -I./inc
 
-CC = g++
+CC = clang++
 
 CCFLAGS = -Wall -Wextra -Werror -std=c++11
 
@@ -19,7 +19,7 @@ all: $(EXEC)
 $(EXEC): $(OBJ)
 	$(CC) $(CCFLAGS) $(OBJ) -o $(EXEC)
 
-%.o:%.cpp
+%.o: %.cpp
 	$(CC) $(CCFLAGS) $(INC) -o $@ -c $<
 
 clean:
