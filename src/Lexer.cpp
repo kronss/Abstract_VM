@@ -3,15 +3,15 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <regex>
-//#include <boost/regex.hpp>
 
 
 
 Lexer::Lexer(int argc, char **argv)
-: _argc(argc),
+: _argc(argc)
+//,
 //  _fileName(NULL),
 //  _readFromFile(false)
-  _lexerFailed(false)
+//  _lexerFailed(false)
 {
 //    _tokens.reserve(100);
     switch (_argc) {
@@ -42,6 +42,11 @@ void Lexer::read()
     }
 }
 
+const tTokens& Lexer::getTokens() const
+{
+    return _tokens;
+}
+
 /*****************************************************************************/
 /* PRIVATE                                                                   */
 /*****************************************************************************/
@@ -57,7 +62,7 @@ void Lexer::readFromStream(std::istream& fin)
 {
     int lineNbr = 0;
     std::string line;
-    bool isErr = false;
+    bool lexerError = false;
 
     std::cout << __func__ << ":" << __LINE__ << std::endl;
 
@@ -76,6 +81,7 @@ void Lexer::readFromStream(std::istream& fin)
      */
     while (std::getline(fin, line)) {
         lineNbr++;
+//        std::cout << __func__ << ":" << __LINE__ << std::endl;
 
         /*
          * Hack!
@@ -83,38 +89,41 @@ void Lexer::readFromStream(std::istream& fin)
          * std::cin terminated by ';;'
          * fStream terminated by EOF
          */
-        if (!_readFromFile && line == ";;") { return ; }
+        if (!_readFromFile && line == ";;") {
             break ;
+        }
         try {
             if (regex_search(line, lineMatch, emptyLineRegexp) || regex_search(line, lineMatch, commentRegexp)) {
                 /*skip line*/
                 continue ;
+//                std::cout << __func__ << ":" << __LINE__ << std::endl;
             } else if (regex_search(line, lineMatch, operationRegexp)) {
+//                std::cout << lineMatch[1].str() << std::endl;
                 _tokens.push_back({lineMatch[1].str()});
+                std::cout << __func__ << ":" << __LINE__ << std::endl;
             } else if (regex_search(line, lineMatch, commandAndIntRegexp) || regex_search(line, lineMatch, commandAndFloatingRegexp)) {
                 _tokens.push_back({lineMatch[1].str(), lineMatch[2].str(), lineMatch[3].str()});
+//                std::cout << __func__ << ":" << __LINE__ << std::endl;
             } else {
+//                std::cout << "error:" << __LINE__ << std::endl;
                 std::string what("error in line " + std::to_string(lineNbr) + ":" + "\n\t\'" + line + "\'");
                 throw AvmException(LEXER_ERROR, what);
             }
         } catch(std::exception &e) {
-            _lexerErrors.push_back(e);
+            //TODO: add handler exception from std::cin
+//            _lexerErrors.push_back(e);
+//            std::cout <<_lexerErrors[0].what() << std::endl;
+//            std::cout << __LINE__ << ":" << e.what() << std::endl;
+            std::cout <<e.what() << std::endl;
+            lexerError = true;
         }
     }
 
-    while () {
+//    if (lineNbr == 1)
+//        throw AvmException(LEXER_ERROR, "No input provided");
+//    }
 
-
-
-    }
-
-
-
-    if (isErr) {
-        throw AvmException(LEXER_ERROR, "No input provided");
-    }
-
-    if (lineNbr == 1) {
+    if (lexerError) {
         throw AvmException(LEXER_ERROR, "parsing terminated");
     }
 }
@@ -146,13 +155,13 @@ void Lexer::readFromFile()
 //  _fileName(NULL)
 //{}
 
-Lexer::Lexer(const Lexer &obj)
-: _argc(obj._argc),
-  _fileName(obj._fileName),
-  _readFromFile(obj._readFromFile),
-_lexerFailed(obj._lexerFailed)
-{
-}
+//Lexer::Lexer(const Lexer &obj)
+//: _argc(obj._argc),
+//  _fileName(obj._fileName),
+//  _readFromFile(obj._readFromFile),
+//_lexerFailed(obj._lexerFailed)
+//{
+//}
 //
 //Lexer & Lexer::operator=(const Lexer &rvl)
 //{

@@ -19,8 +19,9 @@ const char *AvmException::what() const noexcept
 
     switch(_reason)
     {
-    case Reason::LEXER_ERROR:     what = "Lexer error: "; break;
-    case Reason::OPEN_ERROR:      what = "Open error:"  ; break;
+    case Reason::LEXER_ERROR:     what = "Lexer  error: "; break;
+    case Reason::PARSER_ERROR:    what = "Parser error:"  ; break;
+    case Reason::OPEN_ERROR:      what = "Open   error:"  ; break;
     case Reason::UNKNOWN_ERROR:
     default:
         what = "Unknown error:";

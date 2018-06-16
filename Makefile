@@ -2,6 +2,7 @@ EXEC = avm
 
 SRC_FILES = main.cpp \
 			Lexer.cpp \
+			Parser.cpp \
 			avmException.cpp
 
 SRC = $(addprefix src/, $(SRC_FILES))

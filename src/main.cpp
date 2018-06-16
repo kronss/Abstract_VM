@@ -1,5 +1,6 @@
-#include "abstract_VM.hpp"
+//#include "abstract_VM.hpp"
 #include "Lexer.hpp"
+#include "Parser.hpp"
 
 
 int main(const int argc, char **argv)
@@ -8,6 +9,7 @@ int main(const int argc, char **argv)
         Lexer lexer(argc, argv);
         lexer.read();
 
+        Parser parser(lexer.getTokens());
         //
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
