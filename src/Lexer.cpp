@@ -78,12 +78,13 @@ void Lexer::readFromStream(std::istream& fin)
         lineNbr++;
 
         /*
-         * Hack! Diferent logic betwean input data by std::cin and Fstream.
+         * Hack!
+         * Diferent logic betwean input data by std::cin and fStream.
          * std::cin terminated by ';;'
-         * Fstream terminated by EOF
+         * fStream terminated by EOF
          */
         if (!_readFromFile && line == ";;") { return ; }
-
+            break ;
         try {
             if (regex_search(line, lineMatch, emptyLineRegexp) || regex_search(line, lineMatch, commentRegexp)) {
                 /*skip line*/
@@ -101,8 +102,11 @@ void Lexer::readFromStream(std::istream& fin)
         }
     }
 
+    while () {
 
 
+
+    }
 
 
 
@@ -127,6 +131,7 @@ void Lexer::readFromFile()
     std::fstream fs(_fileName);
     _readFromFile = true;
 
+//    std::cout << __func__ << ":" << __LINE__ << std::endl;
     if (!is_regular_file(_fileName.c_str())) {
         throw AvmException(LEXER_ERROR, "bad file");
     }

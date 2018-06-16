@@ -31,10 +31,10 @@ fclean: clean
 re: fclean all
 
 r: all
-	./$(EXEC)
+	./$(EXEC) 
 
 rf: all
-	./$(EXEC) test/test1
+	./$(EXEC) test/tes
 
 
 .phony: all clean fclean re
