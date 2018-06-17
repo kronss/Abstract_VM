@@ -3,7 +3,9 @@ EXEC = avm
 SRC_FILES = main.cpp \
 			Lexer.cpp \
 			Parser.cpp \
-			avmException.cpp
+			Vm.cpp \
+			Operand.cpp \
+			AvmException.cpp
 
 SRC = $(addprefix src/, $(SRC_FILES))
 
@@ -13,7 +15,7 @@ INC = -I./inc
 
 CC = clang++
 
-CCFLAGS = -Wall -Wextra -Werror -std=c++11
+CCFLAGS = -Wall -Wextra -Werror -std=c++11 -ferror-limit=5
 
 all: $(EXEC)
 

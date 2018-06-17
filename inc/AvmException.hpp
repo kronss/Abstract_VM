@@ -8,6 +8,9 @@ enum Reason
 {
     LEXER_ERROR,
     PARSER_ERROR,
+    VM_ERROR,
+
+
     OPEN_ERROR,
 
     UNKNOWN_ERROR,

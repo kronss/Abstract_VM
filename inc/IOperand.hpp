@@ -29,4 +29,4 @@ public:
     virtual ~IOperand() {}
 };
 
-#endif // IOPERAND_HPP
+#endif /*IOPERAND_HPP*/

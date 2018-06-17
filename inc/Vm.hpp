@@ -2,10 +2,13 @@
 #define VM_HPP
 
 #include "Lexer.hpp"
-//#include "IOperand.hpp"
+#include "IOperand.hpp"
 
 #include <deque>
 #include <map>
+
+
+typedef void (*pfunc)();
 
 
 class Vm {
@@ -17,7 +20,7 @@ class Vm {
         Vm(const Vm &rhs)              = delete;
         Vm &operator = (const Vm &rhs) = delete;
 
-        void execute();
+        void execution();
 
         /*getter*/
         const bool& isFailed() const;
@@ -25,6 +28,9 @@ class Vm {
         tTokens      _tokens;
         bool         _VmFailed;
 
+        std::deque<const IOperand*> _deque;
+        std::map<std::string, eOperandType> _typesMap;
+        std::map<std::string, pfunc> _opMap;
 
 
         void push(const std::string& type, const std::string& value);
@@ -37,8 +43,7 @@ class Vm {
         void div();
         void mod();
         void print();
-//         void exit();
-//        typedef void (Machine::*pfunc)();
+        void exit();
 
 
 
