@@ -1,10 +1,10 @@
 #ifndef LEXER_HPP
 #define LEXER_HPP
 
-#define DEBUG 0
-#define DEBUG_MESSAGE(x) do { \
+#define DBG_MSG(x) do { \
   if (DEBUG) { std::cerr << __func__ << ":" << __LINE__ << ":" << (x) << std::endl; } \
 } while (0)
+
 
 #include <iostream>
 #include <string>
@@ -33,12 +33,13 @@ class Lexer {
 
         /*getter*/
         const tTokens& getTokens() const;
+        const bool& getStatus() const;
     private:
         const int    _argc;
         std::string  _fileName;
         bool         _readFromFile;
         tTokens      _tokens;
-//        bool         _lexerFailed;
+        bool         _lexerFailed;
 //        lLexerErrors _lexerErrors;
 
 

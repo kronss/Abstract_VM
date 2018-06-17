@@ -1,8 +1,7 @@
-
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-#include<Lexer.hpp>
+#include "Lexer.hpp"
 
 #include <iostream>
 #include <string>
@@ -24,7 +23,13 @@ class Parser {
     private:
         tTokens      _tokens;
 
-        void checkLine(const std::vector<std::string> &line);
+        void checkOverlaping(const std::vector<std::string> &line);
+
+        template<class T> /* float double */
+        void checkFloat(const std::string& value);
+
+        template<class T> /* int8 int16 int32 */
+        void checkInteger(const std::string& value);
 };
 
 //std::ostream & operator << (std::ostream & o, Lexer const & rhs);
