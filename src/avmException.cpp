@@ -1,5 +1,5 @@
-#include "avmException.hpp"
 #include <iostream>
+#include "../inc/AvmException.hpp"
 
 AvmException::~AvmException()
 {}

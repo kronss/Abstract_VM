@@ -1,50 +1,60 @@
+#include "AvmException.hpp"
 #include "Parser.hpp"
-#include "avmException.hpp"
-
 #include <cstdint>
 #include <limits>
 #include <string>
 #include <typeinfo>
 
-#define DEBUG 0
-
+#define DEBUG 1
 
 //#include <fstream>
 //#include <regex>
 
 Parser::Parser(const tTokens &tokens)
-: _tokens(tokens)
-{}
+: _tokens(tokens),
+  _parserFailed(false),
+  _hasExit(false)
+{
+    DBG_MSG("born");
+}
 
 Parser::~Parser()
-{}
+{
+    DBG_MSG("died");
+}
 
 void Parser::read()
 {
-    bool hasExit = false;
     bool parserError = false;
 
-    DBG_MSG("======== Parsing ========");
+    DBG_MSG("=============== Parsing start");
 
     for (auto& line : _tokens) {
 
         try {
+
             if (line[0] == "assert" || line[0] == "push") {
+
                 checkOverlaping(line);
-            }
-            else {
-    //            checkExit(line[0], has_exit);
+            } else {
+
+                checkExit(line[0]);
             }
         } catch (std::exception &e) {
+
+            _parserFailed = true;
             std::cerr << e.what() << std::endl;
         }
     }
 
     try {
-        if (!hasExit) {
+
+        if (!_hasExit) {
 //            addError(std::string("ParserException: exit command is missing"));
         }
     } catch (std::exception &e) {
+
+        _parserFailed = true;
         std::cerr << e.what() << std::endl;
     }
 
@@ -54,10 +64,19 @@ void Parser::read()
     if (parserError) {
         throw AvmException(PARSER_ERROR, "parsing terminated");
     }
-    DBG_MSG("======== Parsed =========");
+    DBG_MSG("=============== Parsing done");
 }
 
 
+/*getter*/
+const bool& Lexer::isFailed() const
+{
+    return _lexerFailed;
+}
+
+/*****************************************************************************/
+/* PRIVATE                                                                   */
+/*****************************************************************************/
 
 template<class T> /* int8 int16 int32 */
 void Parser::checkInteger(const std::string& value)
@@ -91,8 +110,6 @@ void Parser::checkFloat(const std::string& value)
     }
 }
 
-
-
 void Parser::checkOverlaping(const std::vector<std::string> &line)
 {
     if (line[1] == "int8") {
@@ -111,11 +128,25 @@ void Parser::checkOverlaping(const std::vector<std::string> &line)
         checkFloat<double>(line[2]);
     }
     else {
-//        addError(std::string("ParserException: unknown type: ") + line[1]);
+        throw AvmException(PARSER_ERROR, "unknown type:" + line[1]);
     }
 }
 
+void Parser::checkExit(const std::string &operation)
+{
+    DBG_MSG(_hasExit);
 
+    if (operation == "exit") {
+        if (!_hasExit) {
+            _hasExit = true;
+        } else {
+
+            throw AvmException(PARSER_ERROR, "more than one exit");
+        }
+    }
+
+    DBG_MSG("Exit");
+}
 
 
 

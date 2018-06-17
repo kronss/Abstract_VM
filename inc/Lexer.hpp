@@ -11,8 +11,6 @@
 #include <vector>
 
 typedef std::vector<std::vector<std::string>> tTokens;
-//typedef std::vector<std::exception> lLexerErrors;
-//typedef std::vector<std::exception>::iterator lLexerErrorsIt;
 
 enum {
     NO_ARGUMENT     = 1,
@@ -33,24 +31,18 @@ class Lexer {
 
         /*getter*/
         const tTokens& getTokens() const;
-        const bool& getStatus() const;
+        const bool& isFailed() const;
     private:
         const int    _argc;
         std::string  _fileName;
         bool         _readFromFile;
         tTokens      _tokens;
         bool         _lexerFailed;
-//        lLexerErrors _lexerErrors;
-
-
 
         void readFromStream(std::istream& fin);
         void readFromFile();
-
 };
 
 //std::ostream & operator << (std::ostream & o, Lexer const & rhs);
 
-
 #endif /*LEXER_HPP*/
-

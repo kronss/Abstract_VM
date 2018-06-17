@@ -6,8 +6,6 @@
 #include <iostream>
 #include <string>
 
-
-
 class Parser {
     public:
         Parser(const tTokens &tokens);
@@ -19,9 +17,13 @@ class Parser {
 
         void read();
 
-
+        /*getter*/
+        const bool& isFailed() const;
     private:
         tTokens      _tokens;
+        bool         _parserFailed;
+        bool         _hasExit;
+
 
         void checkOverlaping(const std::vector<std::string> &line);
 
@@ -30,9 +32,10 @@ class Parser {
 
         template<class T> /* int8 int16 int32 */
         void checkInteger(const std::string& value);
+
+        void checkExit(const std::string &operation);
 };
 
 //std::ostream & operator << (std::ostream & o, Lexer const & rhs);
-
 
 #endif /*PARSER_HPP*/

@@ -1,7 +1,7 @@
-//#include "abstract_VM.hpp"
+#include "AvmException.hpp"
 #include "Lexer.hpp"
 #include "Parser.hpp"
-#include "avmException.hpp"
+#include "Vm.hpp"
 
 #define DEBUG 0
 
@@ -14,8 +14,12 @@ int main(const int argc, char **argv)
         Parser parser(lexer.getTokens());
         parser.read();
 
-        if (lexer.getStatus())
+        if (lexer.isFailed() || parser.isFailed())
             throw AvmException(LEXER_ERROR, "parsing terminated");
+
+        /*run-time*/
+        Vm vm(lexer.getTokens());
+
 
 
     } catch (std::exception &e) {

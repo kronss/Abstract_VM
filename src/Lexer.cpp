@@ -1,8 +1,8 @@
 #include "Lexer.hpp"
-#include "avmException.hpp"
 #include <sys/stat.h>
 #include <fstream>
 #include <regex>
+#include "../inc/AvmException.hpp"
 
 #define DEBUG 0
 
@@ -10,9 +10,10 @@ Lexer::Lexer(int argc, char **argv)
 : _argc(argc),
   _readFromFile(false),
   _lexerFailed(false)
-//,
 //  _fileName(NULL),
 {
+    DBG_MSG("born");
+
     _tokens.reserve(100);
     switch (_argc) {
     case NO_ARGUMENT:
@@ -31,7 +32,10 @@ Lexer::Lexer(int argc, char **argv)
     }
 }
 
-Lexer::~Lexer() {}
+Lexer::~Lexer()
+{
+    DBG_MSG("died");
+}
 
 void Lexer::read()
 {
@@ -41,6 +45,7 @@ void Lexer::read()
         readFromStream(std::cin);
     }
 }
+
 /*getter*/
 const tTokens& Lexer::getTokens() const
 {
@@ -48,7 +53,7 @@ const tTokens& Lexer::getTokens() const
 }
 
 /*getter*/
-const bool& Lexer::getStatus() const
+const bool& Lexer::isFailed() const
 {
     return _lexerFailed;
 }
@@ -136,6 +141,7 @@ void Lexer::readFromStream(std::istream& fin)
 static inline bool is_regular_file(const char *fileName)
 {
     struct stat fileStat;
+
     stat(fileName, &fileStat);
     return !!S_ISREG(fileStat.st_mode);
 }
