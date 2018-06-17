@@ -17,11 +17,15 @@ class Vm {
         Vm(const Vm &rhs)              = delete;
         Vm &operator = (const Vm &rhs) = delete;
 
-        void read();
+        void execute();
 
         /*getter*/
         const bool& isFailed() const;
     private:
+        tTokens      _tokens;
+        bool         _VmFailed;
+
+
 
         void push(const std::string& type, const std::string& value);
         void pop();
@@ -38,8 +42,7 @@ class Vm {
 
 
 
-        tTokens      _tokens;
-        bool         _VmFailed;
+
 
 };
 

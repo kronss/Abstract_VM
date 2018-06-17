@@ -19,7 +19,7 @@ int main(const int argc, char **argv)
 
         /*run-time*/
         Vm vm(lexer.getTokens());
-
+        vm.execute();
 
 
     } catch (std::exception &e) {
