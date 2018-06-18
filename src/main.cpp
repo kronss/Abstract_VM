@@ -21,7 +21,6 @@ int main(const int argc, char **argv)
         Vm vm(lexer.getTokens());
         vm.execution();
 
-
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
     } catch (...) {

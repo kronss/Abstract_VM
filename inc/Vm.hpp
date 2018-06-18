@@ -1,14 +1,14 @@
 #ifndef VM_HPP
 #define VM_HPP
 
-#include "Lexer.hpp"
 #include "IOperand.hpp"
+#include "Lexer.hpp"
 
 #include <deque>
 #include <map>
 
 
-typedef void (*pfunc)();
+//typedef void (*pfunc)();
 
 
 class Vm {
@@ -30,7 +30,7 @@ class Vm {
 
         std::deque<const IOperand*> _deque;
         std::map<std::string, eOperandType> _typesMap;
-        std::map<std::string, pfunc> _opMap;
+        std::map<std::string, void (Vm::*)()> _opMap;
 
 
         void push(const std::string& type, const std::string& value);

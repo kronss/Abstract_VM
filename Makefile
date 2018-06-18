@@ -4,8 +4,8 @@ SRC_FILES = main.cpp \
 			Lexer.cpp \
 			Parser.cpp \
 			Vm.cpp \
-			Operand.cpp \
-			AvmException.cpp
+			AvmException.cpp \
+			OperandFactory.cpp
 
 SRC = $(addprefix src/, $(SRC_FILES))
 

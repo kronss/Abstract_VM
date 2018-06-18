@@ -1,34 +1,33 @@
 #include "Lexer.hpp"
+#include "AvmException.hpp"
 #include <sys/stat.h>
 #include <fstream>
 #include <regex>
-#include "../inc/AvmException.hpp"
 
 #define DEBUG 0
 
 Lexer::Lexer(int argc, char **argv)
 : _argc(argc),
-  _readFromFile(false),
   _lexerFailed(false)
-//  _fileName(NULL),
 {
     DBG_MSG("born");
 
     _tokens.reserve(100);
     switch (_argc) {
-    case NO_ARGUMENT:
-//        _readFromFile = false;
-//        readFromStream(std::cin);
-        break;
+        case NO_ARGUMENT:
+            _readFromFile = false;
+            DBG_MSG(_readFromFile);
+            break;
 
-    case ONE_ARGUMENT:
-        _readFromFile = true;
-        _fileName = argv[1];
-//        readFromFile(argv[1]);
-        break;
+        case ONE_ARGUMENT:
+            _readFromFile = true;
+            _fileName = argv[1];
+            DBG_MSG(_readFromFile);
+            break;
 
-    default:
-        throw AvmException(LEXER_ERROR, "invalid numbers of argument");
+        default:
+            DBG_MSG(_readFromFile);
+            throw AvmException(LEXER_ERROR, "invalid numbers of argument");
     }
 }
 
@@ -42,7 +41,10 @@ void Lexer::read()
     if (true == _readFromFile) {
         readFromFile();
     } else {
-        readFromStream(std::cin);
+        readToBufer();
+
+
+//        readFromStream(std::cin);
     }
 }
 
@@ -61,6 +63,17 @@ const bool& Lexer::isFailed() const
 /*****************************************************************************/
 /* PRIVATE                                                                   */
 /*****************************************************************************/
+
+void Lexer::readToBufer()
+{
+
+    for (std::string line; std::getline(std::cin, line);) {
+        if (line == ";;") break;
+        _buffer << line;
+    }
+
+    readFromStream(_buffer);
+}
 
 /*
  * function  readFromStream get data line by line
@@ -149,7 +162,6 @@ static inline bool is_regular_file(const char *fileName)
 void Lexer::readFromFile()
 {
     std::fstream fs(_fileName);
-    _readFromFile = true;
 
     DBG_MSG(_fileName);
 
@@ -160,10 +172,8 @@ void Lexer::readFromFile()
     readFromStream(fs);
 }
 
-
 //std::ostream& operator<<(std::ostream &o, const Lexer& something)
 //{
-//
 //
 //    return o;
 //}

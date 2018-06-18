@@ -1,10 +1,13 @@
 #include "AvmException.hpp"
 #include "Vm.hpp"
+
 #include <iostream>
 
 #include "OperandFactory.hpp"
 #include "Operand.hpp"
 
+
+#define DEBUG 0
 
 Vm::Vm(const tTokens &tokens)
 : _tokens(tokens)
@@ -72,7 +75,7 @@ void Vm::pop()
 {
 //    std::cout << "pop\n";
     if (_deque.size() == 0) {
-        throw (AvmException("AvmException: pop on empty stack"));
+        throw (AvmException(VM_ERROR, "pop on empty stack"));
     }
     auto a = *(_deque.end() - 1);
     _deque.pop_back();
@@ -91,13 +94,13 @@ void Vm::assert(const std::string& type, const std::string& value)
 {
 //    std::cout << "assert " << type << " " << value << "\n";
     if (_deque.size() == 0) {
-        throw (AvmException("AvmException: assert on empty stack"));
+        throw (AvmException(VM_ERROR, "assert on empty stack"));
     }
     auto a = *(_deque.end() - 1);
-    auto b = OperandFactory::getInstance().makeOperand(types_map_[type], value);
+    auto b = OperandFactory::getInstance().makeOperand(_typesMap[type], value);
     if (a->getType() != b->getType() || a->toString() != b->toString()) {
         delete b;
-        throw (AvmException("AvmException: assert failed"));
+        throw (AvmException(VM_ERROR, "assert failed"));
     }
     delete b;
 }
@@ -106,7 +109,7 @@ void Vm::add()
 {
 //    std::cout << "add\n";
     if (_deque.size() < 2) {
-        throw (AvmException("AvmException: add on less than 2 operands"));
+        throw (AvmException(VM_ERROR, "add on less than 2 operands"));
     }
     auto b = *(_deque.end() - 1);
     auto a = *(_deque.end() - 2);
@@ -122,7 +125,7 @@ void Vm::sub()
 {
 //    std::cout << "sub\n";
     if (_deque.size() < 2) {
-        throw (AvmException("AvmException: sub on less than 2 operands"));
+        throw (AvmException(VM_ERROR, "sub on less than 2 operands"));
     }
     auto b = *(_deque.end() - 1);
     auto a = *(_deque.end() - 2);
@@ -138,7 +141,7 @@ void Vm::mul()
 {
 //    std::cout << "mul\n";
     if (_deque.size() < 2) {
-        throw (AvmException("AvmException: mul on less than 2 operands"));
+        throw (AvmException(VM_ERROR, "mul on less than 2 operands"));
     }
     auto b = *(_deque.end() - 1);
     auto a = *(_deque.end() - 2);
@@ -154,7 +157,7 @@ void Vm::div()
 {
 //    std::cout << "div\n";
     if (_deque.size() < 2) {
-        throw (AvmException("AvmException: div on less than 2 operands"));
+        throw (AvmException(VM_ERROR, "div on less than 2 operands"));
     }
     auto b = *(_deque.end() - 1);
     auto a = *(_deque.end() - 2);
@@ -170,7 +173,7 @@ void Vm::mod()
 {
 //    std::cout << "mod\n";
     if (_deque.size() < 2) {
-        throw (AvmException("AvmException: mod on less than 2 operands"));
+        throw (AvmException(VM_ERROR, "mod on less than 2 operands"));
     }
     auto b = *(_deque.end() - 1);
     auto a = *(_deque.end() - 2);
@@ -186,11 +189,11 @@ void Vm::print()
 {
 //    std::cout << "print\n";
     if (_deque.size() == 0) {
-        throw (AvmException("AvmException: print on empty stack"));
+        throw (AvmException(VM_ERROR, "print on empty stack"));
     }
     auto a = *(_deque.end() - 1);
     if (a->getPrecision() != INT8) {
-        throw (AvmException("AvmException: print on non Int8 value"));
+        throw (AvmException(VM_ERROR, "print on non Int8 value"));
     }
     char c = static_cast<char>(std::stoi(a->toString().c_str()));
     if (32 <= c && c <= 126) {

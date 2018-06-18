@@ -7,9 +7,6 @@
 
 #define DEBUG 1
 
-//#include <fstream>
-//#include <regex>
-
 Parser::Parser(const tTokens &tokens)
 : _tokens(tokens),
   _parserFailed(false),
@@ -27,30 +24,26 @@ void Parser::read()
 {
     bool parserError = false;
 
-    DBG_MSG("=============== Parsing start");
+    DBG_MSG("Parsing start");
 
     for (auto& line : _tokens) {
 
         try {
-
             if (line[0] == "assert" || line[0] == "push") {
-
                 checkOverlaping(line);
             } else {
-
                 checkExit(line[0]);
             }
-        } catch (std::exception &e) {
 
+        } catch (std::exception &e) {
             _parserFailed = true;
             std::cerr << e.what() << std::endl;
         }
     }
 
     try {
-
         if (!_hasExit) {
-//            addError(std::string("ParserException: exit command is missing"));
+            throw AvmException(PARSER_ERROR, "exit command is missing");
         }
     } catch (std::exception &e) {
 
@@ -58,25 +51,44 @@ void Parser::read()
         std::cerr << e.what() << std::endl;
     }
 
-
-
-
     if (parserError) {
         throw AvmException(PARSER_ERROR, "parsing terminated");
     }
-    DBG_MSG("=============== Parsing done");
+    DBG_MSG("Parsing done");
 }
 
 
 /*getter*/
-const bool& Lexer::isFailed() const
+const bool& Parser::isFailed() const
 {
-    return _lexerFailed;
+    return _parserFailed;
 }
 
 /*****************************************************************************/
 /* PRIVATE                                                                   */
 /*****************************************************************************/
+
+void Parser::checkOverlaping(const std::vector<std::string> &line)
+{
+    if (line[1] == "int8") {
+        checkInteger<int8_t>(line[2]);
+    }
+    else if (line[1] == "int16") {
+        checkInteger<int16_t>(line[2]);
+    }
+    else if (line[1] == "int32") {
+        checkInteger<int32_t>(line[2]);
+    }
+    else if (line[1] == "float") {
+        checkFloat<float>(line[2]);
+    }
+    else if (line[1] == "double") {
+        checkFloat<double>(line[2]);
+    }
+    else {
+        throw AvmException(PARSER_ERROR, "unknown type:" + line[1]);
+    }
+}
 
 template<class T> /* int8 int16 int32 */
 void Parser::checkInteger(const std::string& value)
@@ -110,28 +122,6 @@ void Parser::checkFloat(const std::string& value)
     }
 }
 
-void Parser::checkOverlaping(const std::vector<std::string> &line)
-{
-    if (line[1] == "int8") {
-        checkInteger<int8_t>(line[2]);
-    }
-    else if (line[1] == "int16") {
-        checkInteger<int16_t>(line[2]);
-    }
-    else if (line[1] == "int32") {
-        checkInteger<int32_t>(line[2]);
-    }
-    else if (line[1] == "float") {
-        checkFloat<float>(line[2]);
-    }
-    else if (line[1] == "double") {
-        checkFloat<double>(line[2]);
-    }
-    else {
-        throw AvmException(PARSER_ERROR, "unknown type:" + line[1]);
-    }
-}
-
 void Parser::checkExit(const std::string &operation)
 {
     DBG_MSG(_hasExit);
@@ -147,6 +137,3 @@ void Parser::checkExit(const std::string &operation)
 
     DBG_MSG("Exit");
 }
-
-
-

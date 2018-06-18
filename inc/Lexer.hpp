@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 typedef std::vector<std::vector<std::string>> tTokens;
 
@@ -38,7 +39,9 @@ class Lexer {
         bool         _readFromFile;
         tTokens      _tokens;
         bool         _lexerFailed;
+        std::stringstream  _buffer;
 
+        void readToBufer();
         void readFromStream(std::istream& fin);
         void readFromFile();
 };
