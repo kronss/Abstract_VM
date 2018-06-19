@@ -7,7 +7,7 @@
 #include "Operand.hpp"
 
 
-#define DEBUG 0
+#define DEBUG 1
 
 Vm::Vm(const tTokens &tokens)
 : _tokens(tokens)
@@ -84,7 +84,7 @@ void Vm::pop()
 
 void Vm::dump()
 {
-//    std::cout << "dump\n";
+    DBG_MSG("dump");
     for (auto it = _deque.rbegin(); it != _deque.rend(); ++it) {
         std::cout << (*it)->toString() << "\n";
     }

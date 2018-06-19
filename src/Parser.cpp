@@ -5,7 +5,7 @@
 #include <string>
 #include <typeinfo>
 
-#define DEBUG 1
+#define DEBUG 0
 
 Parser::Parser(const tTokens &tokens)
 : _tokens(tokens),
@@ -94,32 +94,47 @@ template<class T> /* int8 int16 int32 */
 void Parser::checkInteger(const std::string& value)
 {
     DBG_MSG(typeid(T).name());
+    DBG_MSG("-_-");
+    try {
+        int64_t x = std::stoll(value);
+        T min = std::numeric_limits<T>::lowest();
+        T max = std::numeric_limits<T>::max();
 
-    int64_t x = std::stoll(value);
-    T min = std::numeric_limits<T>::lowest();
-    T max = std::numeric_limits<T>::max();
-
-    if (x < min || max < x) {
-        std::string what = typeid(T).name();
-        what += ": " + value + "is out of boundaries.";
-
-        throw AvmException(PARSER_ERROR, what);
+        DBG_MSG("-_-");
+        if (x < min || max < x) {
+//            std::string what = typeid(T).name();
+    //        what += ": " + value + "is out of boundaries.";
+            throw AvmException(PARSER_ERROR, "out of limits");
+        }
+    } catch ( std::exception &e ) {
+        std::cerr <<e.what() << std::endl;
+        _parserFailed = true;
     }
+
 }
 
 template<class T> /* float double */
 void Parser::checkFloat(const std::string& value)
 {
-    long double x = std::stold(value);
-    T min = std::numeric_limits<T>::lowest();
-    T max = std::numeric_limits<T>::max();
+    DBG_MSG(typeid(T).name());
+    DBG_MSG("-_-");
+    try {
+        long double x = std::stold(value);
+        T min = std::numeric_limits<T>::lowest();
+        T max = std::numeric_limits<T>::max();
 
-    if (x < min || max < x) {
-        std::string what = typeid(T).name();
-        what += ": " + value + "is out of boundaries.";
 
-        throw AvmException(PARSER_ERROR, what);
+        //TODO:NOTE
+        if (x < min || max < x) {
+//            std::string what = typeid(T).name();
+//            what += ": " + value + "is out of boundaries.";
+            throw AvmException(PARSER_ERROR, "out of limits");
     }
+    }catch ( std::exception &e ) {
+            std::cerr <<e.what() << std::endl;
+            _parserFailed = true;
+        }
+
 }
 
 void Parser::checkExit(const std::string &operation)
@@ -127,6 +142,7 @@ void Parser::checkExit(const std::string &operation)
     DBG_MSG(_hasExit);
 
     if (operation == "exit") {
+
         if (!_hasExit) {
             _hasExit = true;
         } else {

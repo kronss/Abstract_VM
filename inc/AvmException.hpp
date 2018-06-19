@@ -10,8 +10,8 @@ enum Reason
     PARSER_ERROR,
     VM_ERROR,
 
-
     OPEN_ERROR,
+    FATAL_ERROR,
 
     UNKNOWN_ERROR,
 };
@@ -28,8 +28,8 @@ private:
     const Reason _reason;
     const std::string _details;
 
-    AvmException();
-    AvmException &operator=(const AvmException &rvl);
+    AvmException() = delete;
+    AvmException &operator=(const AvmException &rvl) = delete;
 };
 
 #endif /*AVM_EXCEPTION_HPP*/

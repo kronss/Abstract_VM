@@ -41,7 +41,7 @@ class Lexer {
         bool         _lexerFailed;
         std::stringstream  _buffer;
 
-        void readToBufer();
+        void readFromStdin();
         void readFromStream(std::istream& fin);
         void readFromFile();
 };

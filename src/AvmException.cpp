@@ -19,10 +19,11 @@ const char *AvmException::what() const noexcept
 
     switch(_reason)
     {
-    case Reason::LEXER_ERROR:     what = "Lexer error: " ; break;
-    case Reason::PARSER_ERROR:    what = "Parser error:" ; break;
-    case Reason::VM_ERROR:        what = "Vm error:"     ; break;
-    case Reason::OPEN_ERROR:      what = "Open error:"   ; break;
+    case Reason::LEXER_ERROR:     what = "\e[0;31m Lexer error: \e[0m"   ; break;
+    case Reason::PARSER_ERROR:    what = "\e[0;35m Parser error: \e[0m"  ; break;
+    case Reason::VM_ERROR:        what = "\e[1;31m Vm error: \e[0m"      ; break;
+    case Reason::OPEN_ERROR:      what = "Open error: \e[0m"             ; break;
+    case Reason::FATAL_ERROR:     what = "\e[0;31m Fatal error: \e[0m"   ; break;
 
     case Reason::UNKNOWN_ERROR:
     default:
@@ -38,15 +39,15 @@ const char *AvmException::what() const noexcept
 /* PRIVATE                                                                   */
 /*****************************************************************************/
 
-AvmException::AvmException()
-: _reason(UNKNOWN_ERROR),
-  _details(NULL)
-{}
-
-AvmException &AvmException::operator=(const AvmException &rvl)
-{
-    if (this == &rvl) { return *this; }
-//    _reason = rvl._reason;
-//    _what = rvl._what;
-    return *this;
-}
+//AvmException::AvmException()
+//: _reason(UNKNOWN_ERROR),
+//  _details(NULL)
+//{}
+//
+//AvmException &AvmException::operator=(const AvmException &rvl)
+//{
+//    if (this == &rvl) { return *this; }
+////    _reason = rvl._reason;
+////    _what = rvl._what;
+//    return *this;
+//}

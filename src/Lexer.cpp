@@ -16,17 +16,17 @@ Lexer::Lexer(int argc, char **argv)
     switch (_argc) {
         case NO_ARGUMENT:
             _readFromFile = false;
-            DBG_MSG(_readFromFile);
+            DBG_MSG("read from stdin");
             break;
 
         case ONE_ARGUMENT:
             _readFromFile = true;
             _fileName = argv[1];
-            DBG_MSG(_readFromFile);
+            DBG_MSG("read from file");
             break;
 
         default:
-            DBG_MSG(_readFromFile);
+            DBG_MSG("error");
             throw AvmException(LEXER_ERROR, "invalid numbers of argument");
     }
 }
@@ -41,10 +41,7 @@ void Lexer::read()
     if (true == _readFromFile) {
         readFromFile();
     } else {
-        readToBufer();
-
-
-//        readFromStream(std::cin);
+        readFromStdin();
     }
 }
 
@@ -64,12 +61,21 @@ const bool& Lexer::isFailed() const
 /* PRIVATE                                                                   */
 /*****************************************************************************/
 
-void Lexer::readToBufer()
+void Lexer::readFromStdin()
 {
-
+    bool flag = false;  //TODO: rename
     for (std::string line; std::getline(std::cin, line);) {
-        if (line == ";;") break;
-        _buffer << line;
+
+        if (line == ";;") {
+            flag = true;
+            break;
+        }
+
+        _buffer << line << '\n';
+    }
+    if (!flag) {
+        //TODO: add throw
+        // error
     }
 
     readFromStream(_buffer);
@@ -129,7 +135,7 @@ void Lexer::readFromStream(std::istream& fin)
                 std::string what("error in line " + std::to_string(lineNbr) + ":" + "\n\t\'" + line + "\'");
                 throw AvmException(LEXER_ERROR, what);
             }
-        } catch(std::exception &e) {
+        } catch (std::exception &e) {
             //TODO: add handler exception from std::cin
 //            _lexerErrors.push_back(e);
 //            std::cout <<_lexerErrors[0].what() << std::endl;
@@ -140,8 +146,10 @@ void Lexer::readFromStream(std::istream& fin)
     }
 
     try {
-        if (lineNbr <= 1) {
+        if (lineNbr < 1) {
             throw AvmException(LEXER_ERROR, "No input provided");
+        } else if (_tokens.size() == 0) {
+            throw AvmException(LEXER_ERROR, "Have not command");
         }
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

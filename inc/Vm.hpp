@@ -8,9 +8,6 @@
 #include <map>
 
 
-//typedef void (*pfunc)();
-
-
 class Vm {
     public:
         Vm(const tTokens &tokens);

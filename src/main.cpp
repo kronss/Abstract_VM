@@ -15,7 +15,7 @@ int main(const int argc, char **argv)
         parser.read();
 
         if (lexer.isFailed() || parser.isFailed())
-            throw AvmException(LEXER_ERROR, "parsing terminated");
+            throw AvmException(FATAL_ERROR, "parsing terminated");
 
         /*run-time*/
         Vm vm(lexer.getTokens());
@@ -26,6 +26,10 @@ int main(const int argc, char **argv)
     } catch (...) {
         std::cerr << "Uncaught exception" << std::endl;
     }
+
+
+//    system("leaks --queit avm");
+
 
     return 0;
 }

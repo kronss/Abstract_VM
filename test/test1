@@ -1,4 +1,5 @@
-push
-sd
-asd
-as
+push float(-127.0)
+;push int8(0)
+
+dump
+exit
